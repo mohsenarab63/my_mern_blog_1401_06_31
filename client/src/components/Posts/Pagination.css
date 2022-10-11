@@ -1,0 +1,13 @@
+.pagination_item {
+
+    padding: 5px;
+    margin: 5px;
+    border: 1px solid #ccc ;
+    cursor: pointer;
+}
+
+.page_active{
+    background-color: red;
+    color: #ccc ;
+    font-weight: bold;
+}

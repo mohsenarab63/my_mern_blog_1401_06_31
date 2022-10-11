@@ -6,6 +6,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import AddPost from './components/Posts/addPost';
  import Posts from './components/Posts/Posts'
  import Navbar from './components/Navbar/Navbar';
+ import Auth from './components/Auth/Auth'
+import PostDetails from './components/PostDetails/PostDetails';
 
 
 
@@ -29,6 +31,8 @@ function App() {
                <Route path="/" exact element={ <div> Main Page </div> } />
                <Route path="/addPost" exact element={ <AddPost /> } />
                <Route path="/posts" exact element={ <Posts />  } />
+               <Route path="/post/:id" exact element={ <PostDetails />  } />
+               <Route path="/auth" exact element={ <Auth />  } />
           </Routes>
       </BrowserRouter>
   );

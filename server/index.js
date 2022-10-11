@@ -16,6 +16,7 @@ app.use(bodyParser.urlencoded({limit:"30mb", extended:true}))
 app.use(cors()) ////
 
 import postRoutes from './routes/posts.js'
+import userRoutes from './routes/users.js'
 
 // app.use('/posts',postRoutes)
 // app.use('/user',userRoutes)
@@ -23,6 +24,11 @@ import postRoutes from './routes/posts.js'
 app.get('/',(req,res)=>{
   res.send('App is Running')
 })
+// app.post('/users/signin',(req,res)=>{
+//   res.status(200).json({ result: 'login process...' });
+// })
+
+
 // app.post('/posts',(req,res)=>{
  
 //   const post = req.body;
@@ -39,10 +45,10 @@ app.get('/',(req,res)=>{
     
 // })
 app.use('/posts',postRoutes)
-
+app.use('/users',userRoutes)
  
 
-const PORT= process.env.PORT || 5000 
+const PORT= process.env.PORT || 5001
 
 // app.listen(PORT, () => console.log(`Server Running on Port: http://localhost:${PORT} ! `))
 
