@@ -61,26 +61,26 @@ const Auth = () => {
                   isSignUp && (
                     <>
 
-                      <Form.Group className="mb-3" controlId="formBasicText">
+                      <Form.Group className="mb-3" controlId="formFirstName">
                           <Form.Label>First name</Form.Label>
                           <Form.Control  name="firstName" type="text" placeholder="Enter First Name" onChange={handleChange} />
                       </Form.Group>
 
-                      <Form.Group className="mb-3" controlId="formBasicText">
+                      <Form.Group className="mb-3" controlId="formLastName">
                           <Form.Label>Last name</Form.Label>
                           <Form.Control  name="lastName" type="text" placeholder="Enter Last Name" onChange={handleChange} />
                       </Form.Group>
                     </>
                   )
                 }
-                <Form.Group className="mb-3" controlId="formBasicText">
+                <Form.Group className="mb-3" controlId="formPassword">
                     <Form.Label>password</Form.Label>
                     <Form.Control  name="password" type="password" placeholder="password" onChange={handleChange} />
                 </Form.Group>
                 {
                   isSignUp && (
 
-                      <Form.Group className="mb-3" controlId="formBasicText">
+                      <Form.Group className="mb-3" controlId="formConfirmPassword">
                           <Form.Label>confirm password</Form.Label>
                           <Form.Control  name="password_confirm" type="password" placeholder="confrim password" onChange={handleChange} />
                       </Form.Group>

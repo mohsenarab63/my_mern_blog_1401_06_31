@@ -41,7 +41,7 @@ const Navbar = () => {
 
      setUser(JSON.parse(localStorage.getItem('profile')));
 
-     console.log ('useEffect [location] in Navbar ==> userAuth: ',userAuth) 
+    // console.log ('useEffect [location] in Navbar ==> userAuth: ',userAuth) 
 
     
   }, [location])

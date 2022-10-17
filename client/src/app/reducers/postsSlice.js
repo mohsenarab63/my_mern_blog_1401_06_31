@@ -9,7 +9,7 @@ export const deleteAsyncPost = createAsyncThunk(
   async (id,{ rejectWithValue }) => {
           try{
             const results = await api.deletePost(id)
-            console.log ('posts/deleteAsyncPost : results.data :',results.data) 
+            //console.log ('posts/deleteAsyncPost : results.data :',results.data) 
             return id
           }
           catch(error){
@@ -22,11 +22,11 @@ export const createAsyncPost = createAsyncThunk(
   async (newPost,{ rejectWithValue }) => {
           try{
             const results = await api.createPost(newPost)
-            console.log ('posts/createAsyncPost : results.data :',results.data) 
+            //console.log ('posts/createAsyncPost : results.data :',results.data) 
             return results.data
           }
           catch(error){
-            return rejectWithValue(error.response.data)
+            return rejectWithValue(error.response.data) 
           }
   }
 )
@@ -37,7 +37,7 @@ export const fetchAsyncPost = createAsyncThunk(
             console.log ('page in fetchAsyncPost: ', page) 
             const result =await  api.fetchPost(page)
             
-            console.log ('data in fetchAsyncPost: ',result.data) 
+           // console.log ('data in fetchAsyncPost: ',result.data) 
             
             return result.data
           }
@@ -46,10 +46,40 @@ export const fetchAsyncPost = createAsyncThunk(
           }
   }
 )
+export const fetchAsyncSinglePost = createAsyncThunk(
+  'posts/fetchAsyncSinglePost',
+  async (id,{ rejectWithValue }) => {
+          try{
+            
+            const result =await  api.fetchSinglePost(id)
+            return result.data
+          }
+          catch(error){
+            return rejectWithValue(error.response.data)
+          }
+  }
+)
+
+export const likePostAction = createAsyncThunk(
+  'posts/likePostAction',
+  async (postId,{ rejectWithValue }) => {
+          try{
+            
+            const result =await  api.likePostAction(postId)
+            return result.data
+          }
+          catch(error){
+            return rejectWithValue(error.response.data)
+          }
+  }
+)
+
+//const {data} = await api.fetchSinglePost(postId)
 
 
 const initialState = {
     posts: [],
+    singlePost:{post:{},isLoading:false},
     cp:1
   }
 
@@ -79,16 +109,53 @@ const initialState = {
         // return {...state, posts: {...state.posts,payload}}
       
        },
+       [createAsyncPost.rejected]:(state, {payload})=>{
+        //console.log ('state in createAsyncPost.fulfilled ',state) 
+           console.log('createAsyncPost rejected: ',payload)
+           if(payload.code === 'login'){
+              
+           }
+        // return {...state, posts: {...state.posts,payload}}
+      
+       },
+       [likePostAction.pending]:()=>{
+            console.log ('likePostAction pending..') 
+       },
+       [likePostAction.fulfilled]:(state, {payload})=>{
+        //console.log ('state in likePostAction.fulfilled ',state) 
+         
+          console.log('likePostAction fulfilled: ',payload)
+       },
+       [likePostAction.rejected]:(state, {payload})=>{
+        
+           console.log('likePostAction rejected: ',payload)
+           
+        
+      
+       },
        [fetchAsyncPost.pending]:()=>{
-             console.log ('Fetch Posts: pending..') 
+            // console.log ('Fetch Posts: pending..') 
        },
        [fetchAsyncPost.fulfilled]:(state, {payload})=>{
-           console.log ('fetch successfully, payload: ',payload) 
+          // console.log ('fetch successfully, payload: ',payload) 
           //  return {...state, posts: payload}
          state.posts = payload
              
        },
        [fetchAsyncPost.rejected]:(state, {payload})=>{
+             console.log('rejected !  payload:  ',payload)
+            // return payload
+       },
+       [fetchAsyncSinglePost.pending]:()=>{
+             console.log ('Fetch fetchAsyncSinglePost: pending..') 
+       },
+       [fetchAsyncSinglePost.fulfilled]:(state, {payload})=>{
+          // console.log ('fetch fetchAsyncSinglePost successfully, payload: ',payload) 
+          //  return {...state, posts: payload}
+         state.singlePost.post = payload
+             
+       },
+       [fetchAsyncSinglePost.rejected]:(state, {payload})=>{
              console.log('rejected !  payload:  ',payload)
             // return payload
        },
