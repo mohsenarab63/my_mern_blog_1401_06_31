@@ -74,6 +74,18 @@ export const likePostAction = createAsyncThunk(
   }
 )
 
+export const addComment = createAsyncThunk('posts/addComment',async ({comment, id} ,{rejectWithValue})=>{
+        try {
+
+          const result =  await api.commentPost(comment, id)
+          return result.data
+
+        }
+        catch(error){
+          return rejectWithValue(error.response.data)
+        }
+} )
+
 //const {data} = await api.fetchSinglePost(postId)
 
 
@@ -129,6 +141,21 @@ const initialState = {
        [likePostAction.rejected]:(state, {payload})=>{
         
            console.log('likePostAction rejected: ',payload)
+           
+        
+      
+       },
+       [addComment.pending]:()=>{
+            console.log ('addComment pending..') 
+       },
+       [addComment.fulfilled]:(state, {payload})=>{
+        //console.log ('state in addComment.fulfilled ',state) 
+         
+          console.log('addComment fulfilled: ',payload)
+       },
+       [addComment.rejected]:(state, {payload})=>{
+        
+           console.log('addComment rejected: ',payload)
            
         
       

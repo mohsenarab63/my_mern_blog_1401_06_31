@@ -1,8 +1,10 @@
 import mongoose from "mongoose";
+//var fileId = mongoose.Types.ObjectId();
 const postSchema = mongoose.Schema({
     title: String,
     message: String,
     name: String,
+    userId: mongoose.Schema.Types.ObjectId ,
     creator: String,
     tags: [String],
     selectedFile: String,

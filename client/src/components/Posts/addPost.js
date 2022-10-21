@@ -115,7 +115,7 @@ const AppPost = () => {
         try{
             console.log ('user',user) 
             console.log ('user.name',user?.result?.name) 
-            dispatch(createAsyncPost({...formData,name:user?.result?.name, tags }))
+            dispatch(createAsyncPost({...formData,name:user?.result?.name, tags, userId:user?.result?._id }))
             .unwrap()
             .then( results => {
                 console.log ('createAsyncPost in then(): ',results) 
