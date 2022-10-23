@@ -121,6 +121,7 @@ const AppPost = () => {
                 console.log ('createAsyncPost in then(): ',results) 
                 console.log ('dispatch(fetchAsyncPost())') 
                /// dispatch(addPost(results))
+               navigate('/posts')
               
                 
             } )
@@ -136,7 +137,7 @@ const AppPost = () => {
 
             })
 
-            navigate('/posts')
+            
            
          
          }

@@ -6,13 +6,13 @@
     align-items: center;
     flex-wrap: wrap;
     /* border: 1px solid #eee; */
-    margin: 10px 0px ;
+    margin: 2px 0px ;
    
 }
 .tag {
-    margin: 2px 10px;
+    margin: 2px 5px;
     padding: 2px 5px ;
-    border: 1px solid #ccc;
+     
     color:rgb(103, 82, 224);
 }
 

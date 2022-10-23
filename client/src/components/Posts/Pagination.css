@@ -7,7 +7,7 @@
 }
 
 .page_active{
-    background-color: red;
+    background-color: #111;
     color: #ccc ;
     font-weight: bold;
 }

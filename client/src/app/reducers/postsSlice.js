@@ -90,9 +90,10 @@ export const addComment = createAsyncThunk('posts/addComment',async ({comment, i
 
 
 const initialState = {
-    posts: [],
+    posts: {content:[], isLoading:false},
     singlePost:{post:{},isLoading:false},
-    cp:1
+    cp:1,
+    np:1
   }
 
   
@@ -102,10 +103,22 @@ const initialState = {
     reducers:{
 
         addPost: (state, action)=>{
-              state.posts.push(action.payload)
+              state.posts.content.push(action.payload)
+        },
+        setIsLoadingPosts: (state, action)=>{
+              state.posts.isLoading = action.payload
         },
         setCurrentPage: (state, action)=>{
               state.cp =parseInt(action.payload) 
+        },
+        setNumberOfPage: (state, action)=>{
+              state.np =parseInt(action.payload) 
+        },
+        NextPage: (state, action)=>{
+          state.cp = state.cp +1 
+        },
+        PrevPage: (state, action)=>{
+              state.cp = state.cp-1 
         },
         
           
@@ -114,19 +127,23 @@ const initialState = {
   extraReducers:{
        [createAsyncPost.pending]:()=>{
             console.log ('createAsyncPost pending..') 
+            
        },
        [createAsyncPost.fulfilled]:(state, {payload})=>{
-        //console.log ('state in createAsyncPost.fulfilled ',state) 
-          state.posts.push(payload)
+        console.log ('state in createAsyncPost.fulfilled, payload: ',payload) 
+          state.posts.content.push(payload)
         // return {...state, posts: {...state.posts,payload}}
+        state.posts.isLoading= false;
       
        },
        [createAsyncPost.rejected]:(state, {payload})=>{
         //console.log ('state in createAsyncPost.fulfilled ',state) 
+
            console.log('createAsyncPost rejected: ',payload)
            if(payload.code === 'login'){
               
            }
+           state.posts.isLoading= false;
         // return {...state, posts: {...state.posts,payload}}
       
        },
@@ -161,16 +178,18 @@ const initialState = {
       
        },
        [fetchAsyncPost.pending]:()=>{
-            // console.log ('Fetch Posts: pending..') 
+             console.log ('Fetch Posts: pending..') 
        },
        [fetchAsyncPost.fulfilled]:(state, {payload})=>{
-          // console.log ('fetch successfully, payload: ',payload) 
+           console.log ('fetch posts successfully, payload: ',payload) 
           //  return {...state, posts: payload}
-         state.posts = payload
+          const {posts,numberOfPages}= payload
+          state.np = numberOfPages
+         state.posts.content = posts
              
        },
        [fetchAsyncPost.rejected]:(state, {payload})=>{
-             console.log('rejected !  payload:  ',payload)
+             console.log('fetch posts rejected !  payload:  ',payload)
             // return payload
        },
        [fetchAsyncSinglePost.pending]:()=>{
@@ -192,7 +211,7 @@ const initialState = {
        [deleteAsyncPost.fulfilled]:(state, {payload})=>{
            console.log ('deleted successfully , id: ', payload) 
          //  return {...state, posts: payload}
-         state.posts = state.posts.filter ( (post)=> post._id !== payload )
+         state.posts.content = state.posts.content.filter ( (post)=> post._id !== payload )
              
        },
        [deleteAsyncPost.rejected]:(state, {payload})=>{
@@ -202,5 +221,5 @@ const initialState = {
   }
   })
 
-  export const {addPost, setCurrentPage} = postsSlice.actions
+  export const {addPost, setCurrentPage,setNumberOfPage,NextPage, PrevPage, setIsLoadingPosts} = postsSlice.actions
   export default postsSlice.reducer 

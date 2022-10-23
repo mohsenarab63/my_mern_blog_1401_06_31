@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import './style.css'
-import {fetchAsyncPost,deleteAsyncPost,setCurrentPage} from '../../app/reducers/postsSlice'
+import {fetchAsyncPost,deleteAsyncPost,setCurrentPage,setIsLoadingPosts} from '../../app/reducers/postsSlice'
 import './posts.css'
 import MyPagination from './Pagination'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import Post from './Post'
+import {Col, Row,Container} from 'react-bootstrap'
 
 function useQuery(){
    return new URLSearchParams(useLocation().search)
@@ -23,40 +24,41 @@ const Posts = () => {
   console.log ('posts Component Loads ..') 
    
   const cp = page
-  let posts = useSelector(state=>state.postsSection.posts)
+  let posts = useSelector(state=>state.postsSection.posts.content)
+  let {isLoading} = useSelector(state=>state.postsSection.posts)
+  let np = useSelector(state=>state.postsSection.np)
   
   useEffect(() => {
-     dispatch(fetchAsyncPost({page}))
+     dispatch(setIsLoadingPosts(true))
+     dispatch(fetchAsyncPost({page})).unwrap().then( result=>{ dispatch(setIsLoadingPosts(false))  } )
      
-  }, [page,dispatch])
+  }, [page,dispatch,np])
   
   
   //  const openPost = (id)=> {
   //   navigate(`/post/${id}`)
   //  }
-  
+   
+  if(isLoading) return <div className="mt-5"> Loading ... </div>
 
   return (
-      <div>
+    <Container>
+    <h1>Store</h1>
+    <Row md={2} xs={1} lg={4} className="g-3">
+      {
+        posts.map(post=>(
+          <Col key={post._id}> 
+             <Post post={post}  />
+          </Col>
+      ))
+      }
+    </Row>
 
-          <div    className='post_container'>
-              {posts.length ? posts.map( (post, index)=> {
-                return (
-                   
-                       <Post post={post} key={post._id} />
+    <MyPagination cp={cp} np={np} />
 
-                      
-                 
-                )
-              } ) : <div>Loading ... </div>}
-          
-            
-        </div>
-
-        <MyPagination cp={cp} np={10} />
-
-      </div>
+  </Container>
+       
   )
-}
+    }
 
 export default Posts

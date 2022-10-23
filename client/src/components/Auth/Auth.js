@@ -12,7 +12,7 @@ const Auth = () => {
   const navigate = useNavigate()
 
   const [formData, setFormData] = useState({email:'', firstName:'',lastName:'', password:'',password_confirm:''})
-  const [isSignUp, setIsSignUp] = useState(true)
+  const [isSignUp, setIsSignUp] = useState(false)
   
 
   const handleSubmit= async(e)=>{
