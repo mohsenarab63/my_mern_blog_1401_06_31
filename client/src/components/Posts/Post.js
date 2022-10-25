@@ -18,6 +18,7 @@ const Post = ({post}) => {
     const dispatch = useDispatch()
     const [user,setUser] = useState(JSON.parse(localStorage.getItem('profile'))) 
     const [likes, setLikes] = useState(post?.likes)
+    const cp = useSelector(state=>state.postsSection.cp)
     const userAuth = useSelector(state=>state.userSection.authData)
 
     const userId = user?.result?._id 
@@ -46,6 +47,17 @@ const Post = ({post}) => {
         }).catch(error=>{
             console.log ('catch error in like action: ',error) 
         })
+    }
+
+    const handleDeletePost = (postId)=>{
+      dispatch(deleteAsyncPost(postId)).unwrap()
+      .then(result=>{
+         
+        navigate(`/posts`)
+        console.log ('delete in then()') 
+      }).catch(error=>{
+        console.log ('error in delete post :',error) 
+      })
     }
 
     const openPost = (id)=> {
@@ -86,7 +98,7 @@ const Post = ({post}) => {
                     {post?.message}
                  </div>
                 
-                  <div>
+                  <div style={{height:'30px'}}>
                   {
                       post.tags.length > 0  && (
                         <div className='tags_container' >
@@ -120,7 +132,7 @@ const Post = ({post}) => {
 
 
                  {userId && userId=== post.creator   && (
-                              <Button  onClick={()=>dispatch(deleteAsyncPost(post._id))} variant='outline-danger' size="sm"  className='delete_post_btn' style={{position:'absolute',right:'1px',top:'1px'}}>
+                              <Button  onClick={()=>handleDeletePost(post._id)} variant='outline-danger' size="sm"  className='delete_post_btn' style={{position:'absolute',right:'1px',top:'1px'}}>
                              
                               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
   <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>

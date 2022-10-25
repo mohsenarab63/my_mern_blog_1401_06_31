@@ -4,7 +4,8 @@ import mongoose from 'mongoose'
 
 export const createPost = async(req,res)=>{
     const post = req.body;
-    console.log ('in createPost',post) 
+    console.log ('in createPost Controller post',post) 
+    console.log ('in createPost Controller') 
     try{
     const newPostMessage = new PostMessage({...post, creator:req.userId})
    

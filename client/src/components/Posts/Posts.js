@@ -27,12 +27,17 @@ const Posts = () => {
   let posts = useSelector(state=>state.postsSection.posts.content)
   let {isLoading} = useSelector(state=>state.postsSection.posts)
   let np = useSelector(state=>state.postsSection.np)
+  const del = useSelector(state=>state.postsSection.del)
   
   useEffect(() => {
      dispatch(setIsLoadingPosts(true))
      dispatch(fetchAsyncPost({page})).unwrap().then( result=>{ dispatch(setIsLoadingPosts(false))  } )
+     .catch(error=>{
+       console.log (error) 
+       setIsLoadingPosts(false)
+     })
      
-  }, [page,dispatch,np])
+  }, [page,dispatch,np,del])
   
   
   //  const openPost = (id)=> {

@@ -93,7 +93,8 @@ const initialState = {
     posts: {content:[], isLoading:false},
     singlePost:{post:{},isLoading:false},
     cp:1,
-    np:1
+    np:1,
+    del:0
   }
 
   
@@ -212,6 +213,7 @@ const initialState = {
            console.log ('deleted successfully , id: ', payload) 
          //  return {...state, posts: payload}
          state.posts.content = state.posts.content.filter ( (post)=> post._id !== payload )
+         state.del = state.del +1 
              
        },
        [deleteAsyncPost.rejected]:(state, {payload})=>{

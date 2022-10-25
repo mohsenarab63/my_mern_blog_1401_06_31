@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, useNavigation } from 'react-router-dom'
 import * as api from '../../api/index'
 import {saveAuthToStorage, asyncSignin, asyncSignup} from '../../app/reducers/userSlice'
+import Alert from 'react-bootstrap/Alert';
 
 
 const Auth = () => {
@@ -14,7 +15,7 @@ const Auth = () => {
   const [formData, setFormData] = useState({email:'', firstName:'',lastName:'', password:'',password_confirm:''})
   const [isSignUp, setIsSignUp] = useState(false)
   
-
+  const  error  = useSelector(state=>state.userSection.error)
   const handleSubmit= async(e)=>{
      try {
       e.preventDefault();
@@ -31,8 +32,12 @@ const Auth = () => {
       else  {
         // const data = await api.signIn(formData)
         // console.log ('data in await (signin): ',data) 
-        dispatch(asyncSignin(formData))
-        navigate('/posts') 
+        dispatch(asyncSignin(formData)).unwrap()
+        .then(result=>{navigate('/posts')})
+        .catch(error=>{
+             
+        })
+         
       }
       
      } catch (error) {
@@ -46,6 +51,7 @@ const Auth = () => {
 
   const handleChange = (e)=>{
     setFormData({...formData,[e.target.name]:e.target.value})
+     
 
   }
 
@@ -85,6 +91,18 @@ const Auth = () => {
                           <Form.Control  name="password_confirm" type="password" placeholder="confrim password" onChange={handleChange} />
                       </Form.Group>
                   )
+                }
+
+                {
+                  error.trim().length>0 &&  (
+                    <Alert variant="danger"  >
+                      
+                      
+                        {error}
+                     
+                    </Alert>
+                  )
+
                 }
                 
                 <Button type="submit" variant="primary">{ isSignUp ? 'SignUp' : 'Login' }</Button>

@@ -54,7 +54,8 @@ import * as api from '../../api/index'
 
 
   const initialState = {
-    authData: {}
+    authData: {},
+    error:''
   } 
 
   export  const userSlice = createSlice({
@@ -80,6 +81,7 @@ import * as api from '../../api/index'
       extraReducers:{
         [asyncSignin.pending]: (state,action)=>{
             console.log ('pending asyncSignin') 
+            state.error = ''
         },
         [asyncSignin.fulfilled]:(state,action)=>{
             console.log (' asyncSignin fullfilled') 
@@ -87,10 +89,15 @@ import * as api from '../../api/index'
             state.authData=action.payload
         },
         [asyncSignin.rejected]:(state,action)=>{
-            console.log (' asyncSignin rejected') 
+            console.log (' asyncSignin rejected :',action.payload) 
+            const {code}=action.payload
+            if(code==='no_user' || code==='invalid_credentials')
+                state.error = "invalid email and/or password"
+               
         },
         [asyncSignup.pending]: (state,action)=>{
             console.log ('pending asyncSignup') 
+            state.error = ''
         },
         [asyncSignup.fulfilled]:(state,action)=>{
             console.log (' asyncSignup fullfilled') 

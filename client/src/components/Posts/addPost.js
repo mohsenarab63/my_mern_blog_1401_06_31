@@ -21,6 +21,7 @@ const AppPost = () => {
   const [error, setError] = useState(false)
   const [tag, setTag] = useState('')
   const [tags, setTags] = useState(['PHP','JS'])
+  const [submittingPost, setSubmittingPost] = useState(false)
 
   console.log ('AddPost Component is loading ..') 
 
@@ -115,11 +116,13 @@ const AppPost = () => {
         try{
             console.log ('user',user) 
             console.log ('user.name',user?.result?.name) 
+            setSubmittingPost(true)
             dispatch(createAsyncPost({...formData,name:user?.result?.name, tags, userId:user?.result?._id }))
             .unwrap()
             .then( results => {
                 console.log ('createAsyncPost in then(): ',results) 
                 console.log ('dispatch(fetchAsyncPost())') 
+                setSubmittingPost(false)
                /// dispatch(addPost(results))
                navigate('/posts')
               
@@ -127,9 +130,10 @@ const AppPost = () => {
             } )
             .catch( (rejectedValueOrSerializedError) => {
             // handle error here
+                setSubmittingPost(false)
                const {code} = rejectedValueOrSerializedError
-            console.log ('Fetch with Error in UseEffect in Posts') 
-            console.log (rejectedValueOrSerializedError)
+               console.log ('Fetch with Error in UseEffect in Posts') 
+               console.log (rejectedValueOrSerializedError)
               if(code==='login'){
                 console.log ('Please Login to create Post')
                  navigate('/auth')
@@ -209,7 +213,9 @@ const AppPost = () => {
 
                  
                
-                <Button type="submit" disabled={!formData.title || !formData.message} variant="primary">Submit</Button>
+                <Button type="submit" disabled={!formData.title || !formData.message || submittingPost} variant="primary" >
+                 { submittingPost ? 'submitting ...' : 'submit' } 
+                 </Button>
 
        </Form>
 
